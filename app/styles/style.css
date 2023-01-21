@@ -66,3 +66,49 @@
   background-color: rgb(187, 128, 20);
   cursor: pointer;
 }
+
+.modal-wrap {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  margin: 10% 25%;
+  background-color: white;
+  border-radius: 1.5rem;
+  border: 2px solid black;
+  padding: 1.5rem 1.5rem;
+}
+
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.2rem;
+  font-size: 1.5rem;
+  color: red;
+  cursor: pointer;
+}
+
+.modal__results {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.modal__label {
+  font-size: 1.5rem;
+  font-style: italic;
+  padding-right: 0.3rem;
+}
+
+.modal__item {
+  padding: 1.5rem 1.5rem;
+}

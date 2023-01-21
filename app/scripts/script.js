@@ -3,8 +3,14 @@ const selectionTime$ = document.querySelector(".selection-time__content");
 const points$ = document.querySelector(".points__content");
 const startBtn$ = document.querySelector(".start");
 const endBtn$ = document.querySelector(".finish");
+const modal$ = document.querySelector(".modal-wrap");
+const closeModal$ = document.querySelector(".modal__close");
+const modalTotalTime$ = document.querySelector(".modal__total-time");
+const modalSelectionTime$ = document.querySelector(".modal__selection-time");
+const modalEfficiency$ = document.querySelector(".modal__efficiency");
 
 let totalTimer;
+let selectionTimer;
 
 let points = 0;
 let totalTime = 0;
@@ -22,9 +28,12 @@ points$.textContent = points;
 
 startBtn$.onclick = startGame;
 endBtn$.onclick = endGame;
+closeModal$.onclick = closeModal;
 
 let btnState = BUTTON_STATE.start;
 let totalTimerStarted = false;
+let startTime;
+let elapsedTime;
 
 function startGame() {
   if (!totalTimerStarted) {
@@ -39,6 +48,10 @@ function startGame() {
       break;
     case BUTTON_STATE.press:
       points$.textContent = ++points;
+      elapsedTime = Date.now() - startTime;
+      selectionTime += +(elapsedTime / 1000).toFixed(3);
+      console.log("selection time: ", selectionTime);
+      selectionTime$.textContent = selectionTime + " s";
       setWaitBtnState();
       break;
   }
@@ -47,6 +60,7 @@ function startGame() {
 function endGame() {
   totalTimerStarted = false;
   stopTotalTimer();
+  showModal();
   clearData();
 }
 
@@ -60,6 +74,16 @@ function startTotalTimer() {
 
 function stopTotalTimer() {
   clearInterval(totalTimer);
+}
+
+function startSelectionTimer() {
+  selectionTimer = setInterval(() => {
+    selectionTime$.textContent = ++selectionTime + " s";
+  }, 1000);
+}
+
+function stopSelectionTimer() {
+  clearInterval(selectionTimer);
 }
 
 function clearData() {
@@ -76,7 +100,6 @@ function setStartBtnState() {
 }
 
 function setWaitBtnState() {
-  console.log("set wait btn state");
   btnState = BUTTON_STATE.wait;
   startBtn$.style.backgroundColor = "grey";
   startBtn$.textContent = "wait...";
@@ -85,7 +108,7 @@ function setWaitBtnState() {
 }
 
 function setPressBtnState() {
-  console.log("set press btn state");
+  startTime = Date.now();
   btnState = BUTTON_STATE.press;
   startBtn$.style.backgroundColor = "green";
   startBtn$.textContent = "press now!!!";
@@ -93,6 +116,21 @@ function setPressBtnState() {
 }
 
 function getRandInt(min, max) {
-  console.log("time: ", Math.floor(Math.random() * (max - min + 1) + min));
   return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
+}
+
+function showModal() {
+  modal$.style.display = "block";
+  modalTotalTime$.textContent = totalTime;
+  modalSelectionTime$.textContent = selectionTime;
+  modalEfficiency$.textContent =
+    selectionTime == 0
+      ? "no selection time? LOOOSER)"
+      : points == 0
+      ? "no points? : LOOOSER)"
+      : (points / selectionTime) * 100;
+}
+
+function closeModal() {
+  modal$.style.display = "none";
 }
